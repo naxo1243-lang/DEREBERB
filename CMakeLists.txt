@@ -24,7 +24,13 @@ juce_add_plugin(Dereverb
     NEEDS_MIDI_OUTPUT FALSE
     PRODUCT_NAME "Dereverb")
 
-target_sources(Dereverb PRIVATE PluginProcessor.cpp PluginProcessor.h)
+# Ilustracion y mascara de efectos de la interfaz, incrustadas en el binario
+juce_add_binary_data(DereverbAssets SOURCES assets/skin.jpg assets/fxmask.png)
+set_target_properties(DereverbAssets PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
+
+target_sources(Dereverb PRIVATE
+    PluginProcessor.cpp PluginProcessor.h
+    PluginEditor.cpp PluginEditor.h)
 
 target_compile_definitions(Dereverb PUBLIC
     JUCE_WEB_BROWSER=0
@@ -33,6 +39,7 @@ target_compile_definitions(Dereverb PUBLIC
 
 target_link_libraries(Dereverb
     PRIVATE
+        DereverbAssets
         juce::juce_audio_utils
         juce::juce_dsp
     PUBLIC
